@@ -16,12 +16,10 @@ bearer_token = os.getenv('bearer_token')
 def search_twitter(url):
     headers = {"Authorization": f"Bearer {bearer_token} "}
     response_json = requests.request('GET', url, headers=headers)
-    # pprint.pprint(response_json)
-    # = pd.DataFrame(response_json)
     return response_json.json()
 
 
-def call_search_twitter():
+def search_twitter_query():
     tag = 'DJ Cuppy -is:retweet'
     expand = 'expansions=author_id'
     tweet_data = 'tweet.fields=author_id,public_metrics,created_at,lang'
@@ -38,6 +36,9 @@ def call_search_twitter():
 
 
 def process_response(data):
+    """
+    A function to extract relevant fields from the tweets data
+    """
     (tweet, tweet_id, lang, time_stamp) = ([], [], [], [])
     (retweet, reply, likes, quote) = ([], [], [], [])
     (username, name, verified, description) = ([], [], [], [])
@@ -60,8 +61,8 @@ def process_response(data):
                             'followers_count': followers, 'following_count': following, 'tweets_count': tweets})
     tweet_data_df = pd.DataFrame(tweet_data)
     author_data_df = pd.DataFrame(author_data)
-    tweet_data_df.to_csv('data.csv')
-    tweet_data_df.to_csv(f'{datetime.today().strftime("%Y-%m-%d %H-%M-%S")}.csv')
-    author_data_df.to_csv(f'{datetime.today().strftime("%Y-%m-%d %H-%M-%S")}.csv')
+    tweet_data_df.to_csv('./tweets_data/data.csv')
+    tweet_data_df.to_csv(f'./tweets_data/{datetime.today().strftime("%Y-%m-%d %H-%M-%S")}.csv')
+    author_data_df.to_csv(f'./tweets_data/{datetime.today().strftime("%Y-%m-%d %H-%M-%S")}.csv')
 
     return tweet_data_df, author_data_df

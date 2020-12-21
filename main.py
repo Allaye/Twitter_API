@@ -1,5 +1,7 @@
 import app
+import up_to_atlas as uta
 
 if __name__ == '__main__':
-    data = app.call_search_twitter()
-    app.process_response(data)
+    data = app.search_twitter_query()
+    tweets_df, authors_df = app.process_response(data)
+    uta.pandas_to_atlas(tweets_df, authors_df)
