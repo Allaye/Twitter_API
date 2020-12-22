@@ -14,18 +14,24 @@ bearer_token = os.getenv('bearer_token')
 
 
 def search_twitter(url):
+    """
+    authenicating the app
+    """
     headers = {"Authorization": f"Bearer {bearer_token} "}
     response_json = requests.request('GET', url, headers=headers)
     return response_json.json()
 
 
-def search_twitter_query():
-    tag = 'DJ Cuppy -is:retweet'
+def search_twitter_query(searchword, payload_size=10):
+    """
+    constructing the search query
+    """
+    tag = '{} -is:retweet'.format(searchword)
     expand = 'expansions=author_id'
     tweet_data = 'tweet.fields=author_id,public_metrics,created_at,lang'
     local_data = 'place.fields=country,name'
     user_data = 'user.fields=description,location,name,public_metrics,username,verified'
-    max_data = 'max_results=100'
+    max_data = 'max_results={}'.format(payload_size)
     url = "https://api.twitter.com/2/tweets/search/recent?query={}&{}&{}&{}&{}&{}".format(tag, expand, max_data,
                                                                                           tweet_data, user_data,
                                                                                           local_data)

@@ -25,6 +25,6 @@ def pandas_to_atlas(df1, df2):
     df1.reset_index(inplace=True)
     df2.reset_index(inplace=True)
     if collection.insert_many(df1.to_dict('records')) and collection.insert_many(df2.to_dict('records')):
-        print('Upload to atlas Successfully')
+        print('Uploaded to atlas Successfully')
     else:
         print('Error whiles uploading to atlas')
